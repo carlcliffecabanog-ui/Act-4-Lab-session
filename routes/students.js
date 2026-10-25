@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
+const requireAuth = require('../middleware/auth');
 
-// 4.2 GET /students (Fetch All Records)
-router.get('/', async (req, res) => {
+// GET /api/students
+router.get('/', requireAuth, async (req, res) => {
     try {
         const students = await Student.find();
         res.json(students);
@@ -12,8 +13,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-// 4.3 POST /students (Create a New Record)
-router.post('/', async (req, res) => {
+// POST /api/students
+router.post('/', requireAuth, async (req, res) => {
     try {
         const newStudent = await Student.create(req.body);
         res.status(201).json(newStudent);
@@ -22,8 +23,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-// 4.4 PUT /students/:id (Update an Existing Record)
-router.put('/:id', async (req, res) => {
+// PUT /api/students/:id
+router.put('/:id', requireAuth, async (req, res) => {
     try {
         const updatedStudent = await Student.findByIdAndUpdate(
             req.params.id,
@@ -39,8 +40,8 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// 4.5 DELETE /students/:id (Remove a Record)
-router.delete('/:id', async (req, res) => {
+// DELETE /api/students/:id
+router.delete('/:id', requireAuth, async (req, res) => {
     try {
         const deletedStudent = await Student.findByIdAndDelete(req.params.id);
         if (!deletedStudent) {
