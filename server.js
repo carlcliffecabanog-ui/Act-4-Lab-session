@@ -1,21 +1,30 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/students');
 
 const app = express();
+
+// Middleware
+app.use(cors({
+    origin: 'http://localhost:5173'
+}));
+
 app.use(express.json());
 
-// Mount authentication routes
+// API Routes
 app.use('/api/auth', authRoutes);
-
-// Mount student routes
 app.use('/api/students', studentRoutes);
 
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected successfully'))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log('MongoDB connection error:', err));
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+// Start Server
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
