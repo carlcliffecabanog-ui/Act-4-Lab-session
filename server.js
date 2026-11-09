@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/students');
-
+const uploadRoutes = require('./routes/upload');
 const app = express();
 
 // Middleware
@@ -18,7 +18,7 @@ app.use(express.json());
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
-
+app.use('/api/upload', uploadRoutes);
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected successfully'))
